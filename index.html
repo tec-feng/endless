@@ -339,35 +339,20 @@
 
       
         
-          
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>多年前踏入技术这个圈子，从事IT行业已经多年，都说了好记性不如烂笔头，网络技术博客的沉淀也算是一种自己的名片。用过csdn来写博客，自己买过服务器，通过WordPress搭建过，也自己手写过一个博客网站，但是最后都以没坚持下来写而放弃维护。偶然在网上查某一个问题，发现了一个很舒服的博客网站，这里我特意用了一个舒服的词来形容它。突然发现博客这个东西还是得坚持下来，也算是给自己一个坚持技术道路的一个理由吧！通过一段时间的接触，聊一下hexo+github搭建出来的博客一些自己的感受：    </p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>多年前踏入技术这个圈子，从事IT行业已经多年，都说了好记性不如烂笔头，网络技术博客的沉淀也算是一种自己的名片。用过csdn来写博客，自己买过服务器，通过WordPress搭建过，也自己手写过一个博客网站，但是最后都以没坚持下来写而放弃维护。偶然在网上查某一个问题，发现了一个很舒服的博客网站，这里我特意用了一个舒服的词来形容它。突然发现博客这个东西还是得坚持下来，也算是给自己一个坚持技术道路的一个理由吧！通过一段时间的接触，聊一下hexo+github搭建出来的博客一些自己的感受：    </p>
 <ul>
 <li>免费</li>
 <li>静态页，访问速度快</li>
 <li>基于github的版本管理和托管</li>
 <li>通过插件发布博客方便    </li>
 </ul>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ul>
-<li>准备一个github的账号</li>
-<li>本地安装node、npm、git客户端    </li>
-</ul>
-<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="github部分"><a href="#github部分" class="headerlink" title="github部分"></a>github部分</h3><h4 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h4><ol>
-<li>新建一个名字为<code>用户名.github.io</code>的仓库，比如我的是<code>tec-feng.github.io</code>,创建成功后，那么你的博客网址就是<code>http://tec-feng.github.io</code>了。</li>
-<li>开启github pages，进入设置，下拉找到github pages，设置你github pages的source和选取一个主题，设置完毕后你就可以通过<code>http://tec-feng.github.io</code>访问了，如图所示:<br><img src="http://image.quantaoer.com/github_page.jpg" alt="github pages">    </li>
-</ol>
-<h4 id="备份准备工作"><a href="#备份准备工作" class="headerlink" title="备份准备工作"></a>备份准备工作</h4><p>当然我们希望我们的博客的所有源代码都由github来给我们管理，那么我们要先对github做一些准备工作。创建两个分支：master和hexo</p>
-<h3 id="hexo部分"><a href="#hexo部分" class="headerlink" title="hexo部分"></a>hexo部分</h3><h4 id="hexo介绍"><a href="#hexo介绍" class="headerlink" title="hexo介绍"></a>hexo介绍</h4><p>Hexo是一个快速、简洁且高效的博客框架。<br>官方网址：<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo.io</a><br>文档网站：<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/</a>    </p>
-<h4 id="hexo的安装"><a href="#hexo的安装" class="headerlink" title="hexo的安装"></a>hexo的安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在电脑的某个地方新建一个hexo的文件夹，比如G:/project/hexo</span><br><span class="line">$ cd G:/project/hexo</span><br><span class="line">$ npm install -g hexo</span><br><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
-<p>通过以上的操作hexo就会自动下载一些文件并安装好，目录结构如下图：</p>
-<p><img src="http://image.quantaoer.com/hexo_init.jpg" alt="目录结构"></p>
-<p>通过一下命令我们可以启动hexo，执行命令后，hexo会在public文件夹商城对应的静态html文件，这些文件就是我们需要提交到github上面用来显示我们博客的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g #生成</span><br><span class="line">$ hexo s #启动本地预览服务，可以浏览http://localhost:4000访问，如果端口占用，可以修改端口_config.yml里面的server：下port:端口</span><br></pre></td></tr></table></figure>
-<h4 id="hexo的主题修改"><a href="#hexo的主题修改" class="headerlink" title="hexo的主题修改"></a>hexo的主题修改</h4><p>hexo默认主题比较不符合自己的风格，个人比较喜欢<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">next</a>的主题,那么我们就动手来安装一下这个主题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd G:/project/hexo</span><br><span class="line">$ git clone https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p>
-<p>修改_config.yml中的theme: landscape改为theme: next，然后重新执行hexo g来重新生成。<br>如果出现一些莫名其妙的问题，可以先执行hexo clean来清理一下public的内容，然后再来重新生成和发布。</p>
-<h4 id="配置上传github"><a href="#配置上传github" class="headerlink" title="配置上传github"></a>配置上传github</h4><p>修改<code>_confg.yml</code>文件中的deploy的部分：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: git@github.com:tec-feng/tec-feng.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></p>
-<p>配置完成以后我们只需要运行<code>hexo d</code>就可以将本次所有改动的代码全部提交到github中去。</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/09/19/hexo-github搭建个人博客/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
