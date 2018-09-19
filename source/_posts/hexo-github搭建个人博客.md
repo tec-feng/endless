@@ -120,5 +120,33 @@ $ git commit -m "新增了一篇博客"
 $ git push origin hexo  #将源代码推入到github的hexo分支中保存
 浏览https://tec-feng.github.io/ 就可以额看到你刚刚写的文章发布了
 
+```
+如图所示：
+![博客](http://image.quantaoer.com/git_web.jpg)
+
+## 注意事项和技巧
+
+* 如果不想博文在首页全部显示, 并能出现阅读全文按钮效果, 需要在你想在首页显示的部分下添加	
 
 ```
+此处及以上的内容会在首页显示
+<!--more-->
+以下是在首页隐藏的部分
+```
+* hexo的源文件介绍	
+
+```
+1、_config.yml站点的配置文件
+2、themes/主题文件夹
+3、source博客文章的.md文件
+4、scaffolds/文章的模板
+5、scaffolds/文章的模板
+6、.gitignore限定在push时哪些文件可以忽略
+7、.git/主题和站点都有，标志这是一个git项目
+8、node_modules/是安装包的目录，在执行npm install的时候会重新生成
+9、public是hexo g生成的静态网页
+10、.deploy_git同上，hexo g也会生成
+11、db.json文件
+```
+* hexo的tag和category配置		
+参考hexo的官方文档：[https://hexo.io/zh-cn/docs/](https://hexo.io/zh-cn/docs/)	
