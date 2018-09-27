@@ -1,11 +1,6 @@
 title: Hello World
-tags:
-  - GIT
-  - tag-git
-  - ''
-categories:
-  - GIT
-  - c-git
+tags: []
+categories: []
 author: sunny
 date: 2018-09-10 17:57:00
 ---
