@@ -269,6 +269,150 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/mysql-5-5-开启ssl连接/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sunny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hi,Sunny">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/20/mysql-5-5-开启ssl连接/" itemprop="url">mysql 5.5 开启ssl连接</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-20T11:22:29+08:00">
+                2019-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1、查看MySQL是否已经开启了SSL"><a href="#1、查看MySQL是否已经开启了SSL" class="headerlink" title="1、查看MySQL是否已经开启了SSL"></a>1、查看MySQL是否已经开启了SSL</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">首先进入mysql的命令模式：</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'%have%ssl%'</span>;</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">| Variable_name | Value    |</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">| have_openssl  | DISABLED |</span><br><span class="line">| have_ssl      | DISABLED |</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">从结果上面来看是没有开启ssl支持的，都是DISABLED的状态。</span><br></pre></td></tr></table></figure>
+<h3 id="2、通过openssl制作生成SSL证书"><a href="#2、通过openssl制作生成SSL证书" class="headerlink" title="2、通过openssl制作生成SSL证书"></a>2、通过openssl制作生成SSL证书</h3><h4 id="2-1-生成一个CA私钥"><a href="#2-1-生成一个CA私钥" class="headerlink" title="2.1    生成一个CA私钥"></a>2.1    生成一个CA私钥</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl genrsa 2048 &gt;ca-key.pem</span><br><span class="line">Generating RSA private key, 2048 bit long modulus</span><br><span class="line">......................................................................................................................................+++</span><br><span class="line">................................................................................................................................................................................................................................+++</span><br><span class="line">e is 65537 (0x10001)</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-通过CA私钥成数字证书"><a href="#2-2-通过CA私钥成数字证书" class="headerlink" title="2.2    通过CA私钥成数字证书"></a>2.2    通过CA私钥成数字证书</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl req -new -x509 -nodes -days 3600 -key ca-key.pem -out ca.pem</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter '.', the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [AU]:</span><br><span class="line">State or Province Name (full name) [Some-State]:</span><br><span class="line">Locality Name (eg, city) []:</span><br><span class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br><span class="line">Common Name (e.g. server FQDN or YOUR name) []:</span><br><span class="line">Email Address []:</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-创建MySQL服务器私钥和请求证书"><a href="#2-3-创建MySQL服务器私钥和请求证书" class="headerlink" title="2.3    创建MySQL服务器私钥和请求证书"></a>2.3    创建MySQL服务器私钥和请求证书</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl req -newkey rsa:2048 -days 3600 -nodes -keyout server-key.pem -out server-req.pem</span><br><span class="line">Generating a 2048 bit RSA private key</span><br><span class="line">...........................................................................+++</span><br><span class="line">................................................+++</span><br><span class="line">writing new private key to 'server-key.pem'</span><br><span class="line">-----</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter '.', the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [AU]:</span><br><span class="line">State or Province Name (full name) [Some-State]:</span><br><span class="line">Locality Name (eg, city) []:</span><br><span class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br><span class="line">Common Name (e.g. server FQDN or YOUR name) []:</span><br><span class="line">Email Address []:</span><br><span class="line"></span><br><span class="line">Please enter the following 'extra' attributes</span><br><span class="line">to be sent with your certificate request</span><br><span class="line">A challenge password []:</span><br><span class="line">An optional company name []:</span><br></pre></td></tr></table></figure>
+<h4 id="2-4-将生成的私钥转换为-RSA-私钥文件格式"><a href="#2-4-将生成的私钥转换为-RSA-私钥文件格式" class="headerlink" title="2.4    将生成的私钥转换为 RSA 私钥文件格式"></a>2.4    将生成的私钥转换为 RSA 私钥文件格式</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl rsa -in server-key.pem -out server-key.pem</span><br><span class="line">writing RSA key</span><br></pre></td></tr></table></figure>
+<h4 id="2-5-用CA-证书来生成一个服务器端的数字证书"><a href="#2-5-用CA-证书来生成一个服务器端的数字证书" class="headerlink" title="2.5    用CA 证书来生成一个服务器端的数字证书"></a>2.5    用CA 证书来生成一个服务器端的数字证书</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl x509 -req -in server-req.pem -days 3600 -CA ca.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem</span><br><span class="line">Signature ok</span><br><span class="line">subject=/C=AU/ST=Some-State/O=Internet Widgits Pty Ltd</span><br><span class="line">Getting CA Private Key</span><br></pre></td></tr></table></figure>
+<h4 id="2-6-创建客户端的-RSA-私钥和数字证书"><a href="#2-6-创建客户端的-RSA-私钥和数字证书" class="headerlink" title="2.6    创建客户端的 RSA 私钥和数字证书"></a>2.6    创建客户端的 RSA 私钥和数字证书</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl req -newkey rsa:2048 -days 3600 -nodes -keyout client-key.pem -out client-req.pem</span><br><span class="line">Generating a 2048 bit RSA private key</span><br><span class="line">............+++</span><br><span class="line">.......+++</span><br><span class="line">writing new private key to 'client-key.pem'</span><br><span class="line">-----</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter '.', the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [AU]:</span><br><span class="line">State or Province Name (full name) [Some-State]:</span><br><span class="line">Locality Name (eg, city) []:</span><br><span class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br><span class="line">Common Name (e.g. server FQDN or YOUR name) []:</span><br><span class="line">Email Address []:</span><br><span class="line"></span><br><span class="line">Please enter the following 'extra' attributes</span><br><span class="line">to be sent with your certificate request</span><br><span class="line">A challenge password []:</span><br><span class="line">An optional company name []:</span><br></pre></td></tr></table></figure>
+<h4 id="2-7-将生成的私钥转换为-RSA-私钥文件格式"><a href="#2-7-将生成的私钥转换为-RSA-私钥文件格式" class="headerlink" title="2.7    将生成的私钥转换为 RSA 私钥文件格式"></a>2.7    将生成的私钥转换为 RSA 私钥文件格式</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl rsa -in client-key.pem -out client-key.pem</span><br><span class="line">writing RSA key</span><br></pre></td></tr></table></figure>
+<h4 id="2-8-用CA-证书来生成一个客户端的数字证书"><a href="#2-8-用CA-证书来生成一个客户端的数字证书" class="headerlink" title="2.8    用CA 证书来生成一个客户端的数字证书"></a>2.8    用CA 证书来生成一个客户端的数字证书</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl x509 -req -in client-req.pem -days 3600 -CA ca.pem -CAkey ca-key.pem -set_serial 01 -out client-cert.pem</span><br><span class="line">Signature ok</span><br><span class="line">subject=/C=AU/ST=Some-State/O=Internet Widgits Pty Ltd</span><br><span class="line">Getting CA Private Key</span><br></pre></td></tr></table></figure>
+<h4 id="2-9-查看所有生成的SSL文件"><a href="#2-9-查看所有生成的SSL文件" class="headerlink" title="2.9    查看所有生成的SSL文件"></a>2.9    查看所有生成的SSL文件</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ ll *.pem</span><br><span class="line">-rw-rw-r-- 1 administrator administrator 1679 Aug 20 10:42 ca-key.pem</span><br><span class="line">-rw-rw-r-- 1 administrator administrator 1229 Aug 20 10:44 ca.pem</span><br><span class="line">-rw-rw-r-- 1 administrator administrator 1099 Aug 20 10:51 client-cert.pem</span><br><span class="line">-rw-rw-r-- 1 administrator administrator 1675 Aug 20 10:50 client-key.pem</span><br><span class="line">-rw-rw-r-- 1 administrator administrator  956 Aug 20 10:49 client-req.pem</span><br><span class="line">-rw-rw-r-- 1 administrator administrator 1099 Aug 20 10:48 server-cert.pem</span><br><span class="line">-rw-rw-r-- 1 administrator administrator 1675 Aug 20 10:47 server-key.pem</span><br><span class="line">-rw-rw-r-- 1 administrator administrator  956 Aug 20 10:47 server-req.pem</span><br></pre></td></tr></table></figure>
+<h3 id="3、MySQL-配置启动SSL"><a href="#3、MySQL-配置启动SSL" class="headerlink" title="3、MySQL 配置启动SSL"></a>3、MySQL 配置启动SSL</h3><h4 id="3-1-复制-CA-证书和服务端SSL文件至MySQL-数据目录"><a href="#3-1-复制-CA-证书和服务端SSL文件至MySQL-数据目录" class="headerlink" title="3.1    复制 CA 证书和服务端SSL文件至MySQL 数据目录"></a>3.1    复制 CA 证书和服务端SSL文件至MySQL 数据目录</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@iZj6c41z3iskfi7x3gumhhZ:/var/lib/mysql# cp /home/administrator/ca.pem /home/administrator/server-*.pem . -v</span><br><span class="line">‘/home/administrator/ca.pem’ -&gt; ‘./ca.pem’</span><br><span class="line">‘/home/administrator/server-cert.pem’ -&gt; ‘./server-cert.pem’</span><br><span class="line">‘/home/administrator/server-key.pem’ -&gt; ‘./server-key.pem’</span><br><span class="line">‘/home/administrator/server-req.pem’ -&gt; ‘./server-req.pem’</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-修改-MySQL-数据目录的CA-证书和服务端-SSL-文件所属用户与组"><a href="#3-2-修改-MySQL-数据目录的CA-证书和服务端-SSL-文件所属用户与组" class="headerlink" title="3.2    修改 MySQL 数据目录的CA 证书和服务端 SSL 文件所属用户与组"></a>3.2    修改 MySQL 数据目录的CA 证书和服务端 SSL 文件所属用户与组</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@iZj6c41z3iskfi7x3gumhhZ:/var/lib/mysql# chown -v mysql.mysql /var/lib/mysql/&#123;ca,server*&#125;.pem</span><br><span class="line">changed ownership of ‘/var/lib/mysql/ca.pem’ from root:root to mysql:mysql</span><br><span class="line">changed ownership of ‘/var/lib/mysql/server-cert.pem’ from root:root to mysql:mysql</span><br><span class="line">changed ownership of ‘/var/lib/mysql/server-key.pem’ from root:root to mysql:mysql</span><br><span class="line">changed ownership of ‘/var/lib/mysql/server-req.pem’ from root:root to mysql:mysql</span><br></pre></td></tr></table></figure>
+<h4 id="3-3-配置-MySQL-服务的配置文件-etc-my-cnf"><a href="#3-3-配置-MySQL-服务的配置文件-etc-my-cnf" class="headerlink" title="3.3    配置 MySQL 服务的配置文件 [/etc/my.cnf]"></a>3.3    配置 MySQL 服务的配置文件 [/etc/my.cnf]</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">ssl-ca=/var/lib/mysql/ca.pem</span><br><span class="line">ssl-cert=/var/lib/mysql/server-cert.pem</span><br><span class="line">ssl-key=/var/lib/mysql/server-key.pem</span><br></pre></td></tr></table></figure>
+<h4 id="3-4-重启MySQL服务"><a href="#3-4-重启MySQL服务" class="headerlink" title="3.4    重启MySQL服务"></a>3.4    重启MySQL服务</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@iZj6c41z3iskfi7x3gumhhZ:/var/lib/mysql# service mysql restart</span><br><span class="line">mysql stop/waiting</span><br><span class="line">mysql start/running, process 22554</span><br></pre></td></tr></table></figure>
+<h4 id="3-5-登陆查看SSL开启状态"><a href="#3-5-登陆查看SSL开启状态" class="headerlink" title="3.5    登陆查看SSL开启状态"></a>3.5    登陆查看SSL开启状态</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;%have%ssl%&apos;;</span><br><span class="line">+---------------+-------+</span><br><span class="line">| Variable_name | Value |</span><br><span class="line">+---------------+-------+</span><br><span class="line">| have_openssl  | YES   |</span><br><span class="line">| have_ssl      | YES   |</span><br><span class="line">+---------------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"> have_openssl 与 have_ssl 值都为YES表示ssl开启成功</span><br></pre></td></tr></table></figure>
+<h3 id="4、SSL链接测试"><a href="#4、SSL链接测试" class="headerlink" title="4、SSL链接测试"></a>4、SSL链接测试</h3><h4 id="4-1-创建用户指定SSL链接"><a href="#4-1-创建用户指定SSL链接" class="headerlink" title="4.1    创建用户指定SSL链接"></a>4.1    创建用户指定SSL链接</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; grant all on *.* to &apos;testssl&apos;@&apos;%&apos; identified by &apos;123456&apos; require SSL;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h4 id="4-2-通过密码连接测试"><a href="#4-2-通过密码连接测试" class="headerlink" title="4.2    通过密码连接测试"></a>4.2    通过密码连接测试</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@iZj6c41z3iskfi7x3gumhhZ:/var/lib/mysql# mysql -utestssl -p</span><br><span class="line">Enter password: </span><br><span class="line">ERROR 1045 (28000): Access denied for user 'testssl'@'localhost' (using password: YES)</span><br><span class="line">使用正确的账号和密码登录，但是提示没有权限，代表ssl生效</span><br></pre></td></tr></table></figure>
+<h4 id="4-3-通过客户端秘钥和证书SSL加上密码连接测试"><a href="#4-3-通过客户端秘钥和证书SSL加上密码连接测试" class="headerlink" title="4.3    通过客户端秘钥和证书SSL加上密码连接测试"></a>4.3    通过客户端秘钥和证书SSL加上密码连接测试</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root@iZj6c41z3iskfi7x3gumhhZ:/var/lib/mysql# mysql -utestssl -p --ssl-cert=/home/administrator/client-cert.pem --ssl-key=/home/administrator/client-key.pem</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 39</span><br><span class="line">Server version: 5.5.57-0ubuntu0.14.04.1 (Ubuntu)</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> </span></span><br><span class="line">正常的连接到mysql，代表ssl生效</span><br></pre></td></tr></table></figure>
+<h3 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h3><h4 id="5-1-SLL介绍"><a href="#5-1-SLL介绍" class="headerlink" title="5.1    SLL介绍"></a>5.1    SLL介绍</h4><p><strong>SSL</strong>（Secure Socket Layer：安全套接字层）利用数据加密、身份验证和消息完整性验证机制，为基于TCP等可靠连接的应用层协议提供安全性保证。</p>
+<p>SSL协议提供的功能主要有：</p>
+<p>​           1、 数据传输的机密性：利用对称密钥算法对传输的数据进行加密。<br>​           2.、身份验证机制：基于证书利用数字签名方法对服务器和客户端进行身份验证，其中客户端的身份验证是可选的。<br>​           3、 消息完整性验证：消息传输过程中使用MAC算法来检验消息的完整性。</p>
+<p>如果用户的传输不是通过SSL的方式，那么其在网络中数据都是以明文进行传输的，而这给别有用心的人带来了可乘之机。所以，现在很多大型网站都开启了SSL功能。同样地，在我们数据库方面，如果客户端连接服务器获取数据不是使用SSL连接，那么在传输过程中，数据就有可能被窃取。</p>
+<h4 id="5-2-默认机制"><a href="#5-2-默认机制" class="headerlink" title="5.2    默认机制"></a>5.2    默认机制</h4><p>​    目前MySQL5.7或更高版本已经默认开启SSL连接，如果强制用户使用SSL连接，应用程序需要指明配置相关SSL参数</p>
+<h4 id="5-3-性能说明"><a href="#5-3-性能说明" class="headerlink" title="5.3    性能说明"></a>5.3    性能说明</h4><pre><code>对于非常敏感核心的数据，或者QPS本来就不高的核心数据，可以采用SSL方式保障数据安全性；
+</code></pre><p>​    对于采用短链接、要求高性能的应用，或者不产生核心敏感数据的应用，性能和可用性才是首要，建议不要采用SSL方式；</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/06/1688商家成长宝典/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -980,7 +1124,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
