@@ -3,7 +3,6 @@ author: Sunny
 tags: mysql
 date: 2019-08-20 12:25:11
 ---
-
 ​	最近客户要求项目对于数据库的连接使用SSL，这样有利于数据安全的传输，以下从网络整理了一些相关文章并实际操作使用，记录备查。
 
 ### 1、查看MySQL是否已经开启了SSL
@@ -253,6 +252,43 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql> 
 正常的连接到mysql，代表ssl生效
 ~~~
+####	4.4 spring连接带有ssl的测试
+这里发现一个很奇怪的问题，在springboot的datasource的配置文件里面就算没有使用带userSSL的url（没有&useSSL=true&requireSSL=true）连接，默认也使用了ssl的连接
+对于这个问题个人认为有两个问题：	
+
+1、没有使用带userSSL的配置?	
+2、没有配置 --ssl-cert和--ssl-key，那么他是如何能够识别使用ssl的呢？
+测试的spring代码连接如下：[springboot测试ssl代码](https://raw.githubusercontent.com/tec-feng/tec-feng.github.io/hexo/files/springboot_ssl_demo.zip "springboot测试ssl代码下载")	
+
+如何测试是否使用了ssl呢：
+
+1、使用未要求ssl的mysql账号，在源代码的application.yml里面配置如下mysql连接信息：
+~~~ shell
+    url: jdbc:mysql://127.0.0.1:3306/test01?serverTimezone=UTC #&useSSL=true&requireSSL=true
+    username: root
+    password: root # 使用druid数据源
+~~~
+使用如下连接访问，并得到结果，表明Ssl_cipher的结果是空的，代表未使用ssl连接。
+~~~ shell
+    administrator@iZj6c41z3iskfi7x3gumhhZ:/etc/nginx/conf.d$ curl -XGET 'http://localhost:8080/hello1'
+[{"variableName":"Ssl_cipher","value":""}]
+~~~
+2、使用要求ssl的mysql账号，在源代码的application.yml里面配置如下mysql连接信息：	
+~~~ shell
+    url: jdbc:mysql://127.0.0.1:3306/test01?serverTimezone=UTC #&useSSL=true&requireSSL=true
+    username: root
+    password: root # 使用druid数据源
+~~~
+
+使用如下连接访问，并得到结果，表明Ssl_cipher的结果是空的，代表使用ssl连接。
+
+~~~ shell
+    administrator@iZj6c41z3iskfi7x3gumhhZ:/etc/nginx/conf.d$ curl -XGET 'http://localhost:8080/hello1'
+[{"variableName":"Ssl_cipher","value":"DHE-RSA-AES128-SHA"}]
+~~~
+那么思考两个问题，以上在生成pem秘钥的时候都是使用的空密码，是否是应该这个原因导致的呢？为了验证这个问题，重新按照2-3
+重新生成pem以后继续按照以上的尝试，也是不需要加载客户端的pem文件就可以使用ssl，那么代表其实这个是已经成功的？还是什么问题，由于时间问题，等待后期验证！！！
+
 
 ### 5、总结
 
