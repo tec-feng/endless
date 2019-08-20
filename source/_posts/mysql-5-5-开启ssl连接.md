@@ -1,8 +1,10 @@
 title: mysql 5.5 开启ssl连接
 author: Sunny
-date: 2019-08-20 11:22:29
-tags:
+tags: mysql
+date: 2019-08-20 11:26:38
 ---
+
+​	最近客户要求项目对于数据库的连接使用SSL，这样有利于数据安全的传输，以下从网络整理了一些相关文章并实际操作使用，记录备查。
 
 ### 1、查看MySQL是否已经开启了SSL
 
@@ -31,6 +33,8 @@ Generating RSA private key, 2048 bit long modulus
 e is 65537 (0x10001)
 
 ```
+
+<!--more-->
 
 #### 2.2	通过CA私钥成数字证书
 
