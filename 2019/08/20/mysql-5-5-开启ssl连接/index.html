@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="1、查看MySQL是否已经开启了SSL123456789首先进入mysql的命令模式：show variables like &apos;%have%ssl%&apos;;+---------------+----------+| Variable_name | Value    |+---------------+----------+| have_openssl  | DISABLED || have_ssl">
+<meta name="description" content="​    最近客户要求项目对于数据库的连接使用SSL，这样有利于数据安全的传输，以下从网络整理了一些相关文章并实际操作使用，记录备查。 1、查看MySQL是否已经开启了SSL123456789首先进入mysql的命令模式：show variables like &apos;%have%ssl%&apos;;+---------------+----------+| Variable_name | Value    |">
+<meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql 5.5 开启ssl连接">
 <meta property="og:url" content="http://yoursite.com/2019/08/20/mysql-5-5-开启ssl连接/index.html">
 <meta property="og:site_name" content="Hi,Sunny">
-<meta property="og:description" content="1、查看MySQL是否已经开启了SSL123456789首先进入mysql的命令模式：show variables like &apos;%have%ssl%&apos;;+---------------+----------+| Variable_name | Value    |+---------------+----------+| have_openssl  | DISABLED || have_ssl">
+<meta property="og:description" content="​    最近客户要求项目对于数据库的连接使用SSL，这样有利于数据安全的传输，以下从网络整理了一些相关文章并实际操作使用，记录备查。 1、查看MySQL是否已经开启了SSL123456789首先进入mysql的命令模式：show variables like &apos;%have%ssl%&apos;;+---------------+----------+| Variable_name | Value    |">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-20T03:22:29.611Z">
+<meta property="og:updated_time" content="2019-08-20T03:26:39.001Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql 5.5 开启ssl连接">
-<meta name="twitter:description" content="1、查看MySQL是否已经开启了SSL123456789首先进入mysql的命令模式：show variables like &apos;%have%ssl%&apos;;+---------------+----------+| Variable_name | Value    |+---------------+----------+| have_openssl  | DISABLED || have_ssl">
+<meta name="twitter:description" content="​    最近客户要求项目对于数据库的连接使用SSL，这样有利于数据安全的传输，以下从网络整理了一些相关文章并实际操作使用，记录备查。 1、查看MySQL是否已经开启了SSL123456789首先进入mysql的命令模式：show variables like &apos;%have%ssl%&apos;;+---------------+----------+| Variable_name | Value    |">
 
 
 
@@ -301,7 +302,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-20T11:22:29+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-20T11:26:38+08:00">
                 2019-08-20
               </time>
             
@@ -339,8 +340,10 @@
       
 
       
-        <h3 id="1、查看MySQL是否已经开启了SSL"><a href="#1、查看MySQL是否已经开启了SSL" class="headerlink" title="1、查看MySQL是否已经开启了SSL"></a>1、查看MySQL是否已经开启了SSL</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">首先进入mysql的命令模式：</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'%have%ssl%'</span>;</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">| Variable_name | Value    |</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">| have_openssl  | DISABLED |</span><br><span class="line">| have_ssl      | DISABLED |</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">从结果上面来看是没有开启ssl支持的，都是DISABLED的状态。</span><br></pre></td></tr></table></figure>
+        <p>​    最近客户要求项目对于数据库的连接使用SSL，这样有利于数据安全的传输，以下从网络整理了一些相关文章并实际操作使用，记录备查。</p>
+<h3 id="1、查看MySQL是否已经开启了SSL"><a href="#1、查看MySQL是否已经开启了SSL" class="headerlink" title="1、查看MySQL是否已经开启了SSL"></a>1、查看MySQL是否已经开启了SSL</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">首先进入mysql的命令模式：</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'%have%ssl%'</span>;</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">| Variable_name | Value    |</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">| have_openssl  | DISABLED |</span><br><span class="line">| have_ssl      | DISABLED |</span><br><span class="line">+<span class="comment">---------------+----------+</span></span><br><span class="line">从结果上面来看是没有开启ssl支持的，都是DISABLED的状态。</span><br></pre></td></tr></table></figure>
 <h3 id="2、通过openssl制作生成SSL证书"><a href="#2、通过openssl制作生成SSL证书" class="headerlink" title="2、通过openssl制作生成SSL证书"></a>2、通过openssl制作生成SSL证书</h3><h4 id="2-1-生成一个CA私钥"><a href="#2-1-生成一个CA私钥" class="headerlink" title="2.1    生成一个CA私钥"></a>2.1    生成一个CA私钥</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl genrsa 2048 &gt;ca-key.pem</span><br><span class="line">Generating RSA private key, 2048 bit long modulus</span><br><span class="line">......................................................................................................................................+++</span><br><span class="line">................................................................................................................................................................................................................................+++</span><br><span class="line">e is 65537 (0x10001)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h4 id="2-2-通过CA私钥成数字证书"><a href="#2-2-通过CA私钥成数字证书" class="headerlink" title="2.2    通过CA私钥成数字证书"></a>2.2    通过CA私钥成数字证书</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl req -new -x509 -nodes -days 3600 -key ca-key.pem -out ca.pem</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter '.', the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [AU]:</span><br><span class="line">State or Province Name (full name) [Some-State]:</span><br><span class="line">Locality Name (eg, city) []:</span><br><span class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br><span class="line">Common Name (e.g. server FQDN or YOUR name) []:</span><br><span class="line">Email Address []:</span><br></pre></td></tr></table></figure>
 <h4 id="2-3-创建MySQL服务器私钥和请求证书"><a href="#2-3-创建MySQL服务器私钥和请求证书" class="headerlink" title="2.3    创建MySQL服务器私钥和请求证书"></a>2.3    创建MySQL服务器私钥和请求证书</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl req -newkey rsa:2048 -days 3600 -nodes -keyout server-key.pem -out server-req.pem</span><br><span class="line">Generating a 2048 bit RSA private key</span><br><span class="line">...........................................................................+++</span><br><span class="line">................................................+++</span><br><span class="line">writing new private key to 'server-key.pem'</span><br><span class="line">-----</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter '.', the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [AU]:</span><br><span class="line">State or Province Name (full name) [Some-State]:</span><br><span class="line">Locality Name (eg, city) []:</span><br><span class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br><span class="line">Common Name (e.g. server FQDN or YOUR name) []:</span><br><span class="line">Email Address []:</span><br><span class="line"></span><br><span class="line">Please enter the following 'extra' attributes</span><br><span class="line">to be sent with your certificate request</span><br><span class="line">A challenge password []:</span><br><span class="line">An optional company name []:</span><br></pre></td></tr></table></figure>
 <h4 id="2-4-将生成的私钥转换为-RSA-私钥文件格式"><a href="#2-4-将生成的私钥转换为-RSA-私钥文件格式" class="headerlink" title="2.4    将生成的私钥转换为 RSA 私钥文件格式"></a>2.4    将生成的私钥转换为 RSA 私钥文件格式</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">administrator@iZj6c41z3iskfi7x3gumhhZ:~$ openssl rsa -in server-key.pem -out server-key.pem</span><br><span class="line">writing RSA key</span><br></pre></td></tr></table></figure>
@@ -378,6 +381,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
       
 
       
@@ -495,7 +504,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
