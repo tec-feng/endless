@@ -269,6 +269,133 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/22/Ubuntu14-04-安装Docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sunny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hi,Sunny">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/22/Ubuntu14-04-安装Docker/" itemprop="url">Ubuntu14.04 安装Docker</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-22T14:49:51+08:00">
+                2019-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>最近在一台Ubuntu14.0.4的机器上安装docker，试了很多帖子上面的安装方法，最终都在apt-get update的时候，通不过，导致安装不成功，记录备查。
+</code></pre><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h5 id="安装必要的一些系统工具"><a href="#安装必要的一些系统工具" class="headerlink" title="安装必要的一些系统工具"></a>安装必要的一些系统工具</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common</span><br></pre></td></tr></table></figure>
+<h5 id="安装GPG证书"><a href="#安装GPG证书" class="headerlink" title="安装GPG证书"></a>安装GPG证书</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+<h5 id="写入软件源信息"><a href="#写入软件源信息" class="headerlink" title="写入软件源信息"></a>写入软件源信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository "deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable"</span><br></pre></td></tr></table></figure>
+<h5 id="更新并安装-Docker-CE"><a href="#更新并安装-Docker-CE" class="headerlink" title="更新并安装 Docker-CE"></a>更新并安装 Docker-CE</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get -y update</span><br><span class="line">sudo apt-get -y install docker-ce</span><br></pre></td></tr></table></figure>
+<h5 id="安装指定版本的Docker-CE"><a href="#安装指定版本的Docker-CE" class="headerlink" title="安装指定版本的Docker-CE:"></a>安装指定版本的Docker-CE:</h5><h6 id="查找Docker-CE的版本"><a href="#查找Docker-CE的版本" class="headerlink" title="查找Docker-CE的版本:"></a>查找Docker-CE的版本:</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> apt-cache madison docker-ce</span><br><span class="line"><span class="meta">#</span>   docker-ce | 17.03.1~ce-0~ubuntu-xenial | http://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages</span><br><span class="line"><span class="meta">#</span>   docker-ce | 17.03.0~ce-0~ubuntu-xenial | http://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages</span><br></pre></td></tr></table></figure>
+<h6 id="安装指定版本的Docker-CE-1"><a href="#安装指定版本的Docker-CE-1" class="headerlink" title="安装指定版本的Docker-CE:"></a>安装指定版本的Docker-CE:</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> (VERSION 例如上面的 17.03.1~ce-0~ubuntu-xenial)</span><br><span class="line"><span class="meta">#</span> sudo apt-get -y install docker-ce=[VERSION]</span><br></pre></td></tr></table></figure>
+<h4 id="安装校验"><a href="#安装校验" class="headerlink" title="安装校验"></a>安装校验</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@iZj6c41z3iskfi7x3gumhhZ:/etc/apt# docker version</span><br><span class="line">Client:</span><br><span class="line"> Version:           18.06.3-ce</span><br><span class="line"> API version:       1.38</span><br><span class="line"> Go version:        go1.10.3</span><br><span class="line"> Git commit:        d7080c1</span><br><span class="line"> Built:             Wed Feb 20 02:27:13 2019</span><br><span class="line"> OS/Arch:           linux/amd64</span><br><span class="line"> Experimental:      false</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          18.06.3-ce</span><br><span class="line">  API version:      1.38 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.10.3</span><br><span class="line">  Git commit:       d7080c1</span><br><span class="line">  Built:            Wed Feb 20 02:25:38 2019</span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     false</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/mysql-5-5-开启ssl连接/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -978,7 +1105,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
